@@ -20,7 +20,7 @@ const funcMap = require('../main/main');
 //   expect(number).toBe({barcode:"ITEM000001"});
 // });
 
-it ('should decode barcodes', () => {
+it ('should decode barcodes with multiple quantity', () => {
 
   const barcode = "ITEM000001-2";
   let objToBe = {barcode:'ITEM000001', count:2}
@@ -29,6 +29,19 @@ it ('should decode barcodes', () => {
 
   expect(obj).toBe(JSON.stringify(objToBe));
 });
+
+it ('should decode barcodes with 1 quantity', () =>{
+
+  const barcode = "ITEM000001";
+  let objToBe = {barcode:'ITEM000001', count:1}
+
+  let obj = funcMap.decodeBarcode(barcode);
+
+  expect(obj).toBe(JSON.stringify(objToBe));
+
+});
+
+
 
 
 // describe('pos', () => {

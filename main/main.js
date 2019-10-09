@@ -13,8 +13,15 @@ function decodeBarcode(stringBarcode){
     let stirngObj = stringBarcode.split('-');
 
     obj.barcode = stirngObj[0];
-    obj.count = parseInt(stirngObj[1]);
 
+    if(stirngObj[1] != undefined)
+    {
+    obj.count = parseFloat(stirngObj[1]);
+    }
+    else {
+        obj.count = 1;
+    }
+    console.log(stirngObj[1]);
     console.log(obj);
 
     return JSON.stringify(obj);
