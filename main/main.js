@@ -52,12 +52,21 @@ function loadItems(inputItems){
 
     console.log(obj);
 
-    return JSON.stringify(obj[0]);
+    return obj[0];
+}
+
+function combineItems(objToBe)
+{
+    let obj = loadItems(objToBe);
+    obj.count = parseFloat(objToBe.count);
+
+    return obj;
 }
 
 module.exports = {
     // loadItems : loadItems,
     decodeBarcode : decodeBarcode,
-    loadItems : loadItems
+    loadItems : loadItems,
+    combineItems:combineItems
 };
 //TODO: Implement the exercise requirements in this file and remove this comment

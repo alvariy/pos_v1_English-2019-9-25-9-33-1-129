@@ -45,11 +45,25 @@ it ('should load items based on barcodes', () => {
 
   let objToBe = {barcode:'ITEM000001', count:1}
   let itemList = funcMap.loadItems(objToBe);
-  expect(itemList).toBe(JSON.stringify({
+  expect(JSON.stringify(itemList)).toBe(JSON.stringify({
     barcode: 'ITEM000001',
     name: 'Sprite',
     unit: 'bottle',
     price: 3.00
+  }));
+});
+
+it ('should combine items ', () => {
+
+  let objToBe = {barcode:'ITEM000001', count:1}
+  let itemList = funcMap.combineItems(objToBe);
+
+  expect(JSON.stringify(itemList)).toBe(JSON.stringify({
+    barcode: 'ITEM000001',
+    name: 'Sprite',
+    unit: 'bottle',
+    price: 3.00,
+    count: 1
   }));
 });
 
