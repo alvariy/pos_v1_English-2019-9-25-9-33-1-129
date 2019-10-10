@@ -41,7 +41,17 @@ it ('should decode barcodes with 1 quantity', () =>{
 
 });
 
+it ('should load items based on barcodes', () => {
 
+  let objToBe = {barcode:'ITEM000001', count:1}
+  let itemList = funcMap.loadItems(objToBe);
+  expect(itemList).toBe(JSON.stringify({
+    barcode: 'ITEM000001',
+    name: 'Sprite',
+    unit: 'bottle',
+    price: 3.00
+  }));
+});
 
 
 // describe('pos', () => {

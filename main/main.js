@@ -5,6 +5,7 @@
 //     let objectC = {barcode: object.barcode};
 //     return objectC;
 // }
+const fixturesMap = require('../__tests__/fixtures');
 
 function decodeBarcode(stringBarcode){
 
@@ -21,14 +22,42 @@ function decodeBarcode(stringBarcode){
     else {
         obj.count = 1;
     }
-    console.log(stirngObj[1]);
-    console.log(obj);
 
     return JSON.stringify(obj);
 }
 
+function loadItems(inputItems){
+
+    let obj = {};
+    let allItems = fixturesMap.loadAllItems();
+
+    obj = allItems.map(n => {
+        if (n.barcode === inputItems.barcode)
+        {
+            return n;
+        }
+    }
+    //    return (n.barcode === inputItems.barcode) ? obj = obj + n : 0;
+    ).filter(items => {
+        if(items != undefined)
+        {
+        if(items.barcode === inputItems.barcode)
+        {
+            return items;
+        }
+    }
+    }
+       );
+
+
+    console.log(obj);
+
+    return JSON.stringify(obj[0]);
+}
+
 module.exports = {
     // loadItems : loadItems,
-    decodeBarcode : decodeBarcode
+    decodeBarcode : decodeBarcode,
+    loadItems : loadItems
 };
 //TODO: Implement the exercise requirements in this file and remove this comment
