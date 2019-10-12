@@ -60,54 +60,148 @@ it ('should combine items ', () => {
 
 it ('should decode tags', () => {
 
-  const barcode = "ITEM000001";
+  const barcode = ["ITEM000001"];
   let obj = funcMap.decodeBarcode(barcode);
   let itemList = funcMap.combineItems(obj);
   let decodedTags = funcMap.decodedTags(itemList);
   
-  expect(decodedTags).toBe({
+  expect(decodedTags).toBe([{
     barcode: 'ITEM000001',
     name: 'Sprite',
     unit: 'bottle',
     price: 3.00,
     count: 1
-  });
+  }]);
 
 });
 
+it('should load promotions', () => 
+{
 
+  let obj = funcMap.loadPromotions();
+  expect(obj).toBe([
+    {
+      type: 'BUY_TWO_GET_ONE_FREE',
+      barcodes: [
+        'ITEM000000',
+        'ITEM000001',
+        'ITEM000005'
+      ]
+    }
+  ]);
+});
 
+it('should calculate receipt items', () =>{
 
-// describe('pos', () => {
+  let obj = [{
+    barcode: 'ITEM000001',
+    name: 'Sprite',
+    unit: 'bottle',
+    price: 3.00,
+    count: 1
+  }];
 
-//   it('should print text', () => {
+  let receiptItems = funcMap.calculateReceiptItems(obj);
 
-//     const tags = [
-//       'ITEM000001',
-//       'ITEM000001',
-//       'ITEM000001',
-//       'ITEM000001',
-//       'ITEM000001',
-//       'ITEM000003-2.5',
-//       'ITEM000005',
-//       'ITEM000005-2',
-//     ];
+  expect(receiptItems).toBe([{
+    barcode: 'ITEM000001',
+    name: 'Sprite',
+    unit: 'bottle',
+    price: 3.00,
+    count: 1,
+    subtotal: 3.00
+  }]);
+  
+});
 
-//     spyOn(console, 'log');
+it('should calculate receipt total', () =>{
 
-//     printReceipt(tags);
+  let receiptItems = [{
+    barcode: 'ITEM000001',
+    name: 'Sprite',
+    unit: 'bottle',
+    price: 3.00,
+    count: 1,
+    subtotal: 3.00
+  }];
 
-//     const expectText = `***<store earning no money>Receipt ***
-// Name：Sprite，Quantity：5 bottles，Unit：3.00(yuan)，Subtotal：12.00(yuan)
-// Name：Litchi，Quantity：2.5 pounds，Unit：15.00(yuan)，Subtotal：37.50(yuan)
-// Name：Instant Noodles，Quantity：3 bags，Unit：4.50(yuan)，Subtotal：9.00(yuan)
-// ----------------------
-// Total：58.50(yuan)
-// Discounted prices：7.50(yuan)
-// **********************`;
+  let total = funcMap.calculateReceiptTotal(receiptItems);
 
-//     expect(console.log).toHaveBeenCalledWith(expectText);
-//   });
-// });
+  expect(total).toBe(3.00);
 
+});
+
+it('should calculate receipt with discount', () =>{
+
+  let itemList = [{
+    barcode: 'ITEM000001',
+    name: 'Sprite',
+    unit: 'bottle',
+    price: 3.00,
+    count: 1
+  }];
+
+  let receipt = funcMap.calculateReceiptWithDiscount(itemList);
+
+  expect(receipt).toBe(
+    {
+      receiptItems: [{
+        barcode: 'ITEM000001',
+        name: 'Sprite',
+        unit: 'bottle',
+        price: 3.00,
+        count: 1,
+        subtotal: 3.00
+      }],
+      total: 3.00,
+      saving: 0
+    }
+  );
+
+});
+
+it('should render receipt', () =>{
+
+  let receipt =  {
+    receiptItems: [{
+      barcode: 'ITEM000001',
+      name: 'Sprite',
+      unit: 'bottle',
+      price: 3.00,
+      count: 1,
+      subtotal: 3.00
+    }],
+    total: 3.00,
+    saving: 0
+  };
+
+  let expectedText = `***<store earning no money>Receipt ***
+   Name：Sprite，Quantity：1 bottles，Unit：3.00(yuan)，Subtotal：3.00(yuan)
+   ----------------------
+   Total：3.00(yuan)
+   Discounted prices：0.00(yuan)
+   **********************`;
+
+   let actualText = funcMap.renderReceipt(receipt);
+
+   expect(actualText).toBe(expectedText);
+
+});
+
+it('should print receipt', () => {
+
+  const barcode = ["ITEM000001"];
+
+  expectedText = `***<store earning no money>Receipt ***
+  Name：Sprite，Quantity：1 bottles，Unit：3.00(yuan)，Subtotal：3.00(yuan)
+  ----------------------
+  Total：3.00(yuan)
+  Discounted prices：0.00(yuan)
+  **********************`;
+
+  let actualText = funcMap.printReceipt(barcode);
+
+  expect(actualText).toBe(expectedText);
+
+});
 
