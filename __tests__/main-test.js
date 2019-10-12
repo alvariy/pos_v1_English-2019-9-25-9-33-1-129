@@ -2,23 +2,14 @@
 const funcMap = require('../main/main');
 
 
-// it ('should return items without count', () => {
+it ('should return items without count', () => {
 
-//   const object = {barcode:"ITEM000001", count:0};
+  const object = {barcode:"ITEM000001", count:0};
 
-//   let number = funcMap.loadItems(object);
+  let number = funcMap.loadItems(object);
 
-//   expect(number).toBe({barcode:"ITEM000001"});
-// });
-
-// it ('should return items without count', () => {
-
-//   const object = {barcode:"ITEM000001", count:0};
-
-//   let number = funcMap.loadItems(object);
-
-//   expect(number).toBe({barcode:"ITEM000001"});
-// });
+  expect(number).toBe({barcode:"ITEM000001"});
+});
 
 it ('should decode barcodes with multiple quantity', () => {
 
@@ -66,6 +57,25 @@ it ('should combine items ', () => {
     count: 1
   }));
 });
+
+it ('should decode tags', () => {
+
+  const barcode = "ITEM000001";
+  let obj = funcMap.decodeBarcode(barcode);
+  let itemList = funcMap.combineItems(obj);
+  let decodedTags = funcMap.decodedTags(itemList);
+  
+  expect(decodedTags).toBe({
+    barcode: 'ITEM000001',
+    name: 'Sprite',
+    unit: 'bottle',
+    price: 3.00,
+    count: 1
+  });
+
+});
+
+
 
 
 // describe('pos', () => {
